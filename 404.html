@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="manifest" href="manifest.json">
+    <title>Fabric Web Loader</title>
+    <style>
+        body { margin: 0; background: #141414; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
+        .controls { padding: 20px; text-align: center; }
+        button, input[type="file"] { padding: 10px 20px; font-size: 16px; margin: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="setup-screen" class="controls">
+        <h2>Fabric .jar Web Loader</h2>
+        <p>Upload your Fabric API and Mod .jar files:</p>
+        <input type="file" id="mod-input" accept=".jar" multiple><br>
+        <button onclick="bootGame()">Launch Game</button><br>
+        <button onclick="navigator.share({ title: 'My Loader', url: window.location.href });">Share App Link</button>
+    </div>
+
+    <script>
+        async function bootGame() {
+            const files = document.getElementById('mod-input').files;
+            if (files.length === 0) {
+                alert("Please upload at least one .jar mod file!");
+                return;
+            }
+
+            document.getElementById('setup-screen').style.display = 'none';
+            alert("Initializing Fabric Mod Loader Engine... Reading virtual files.");
+        }
+    </script>
+</body>
+</html>
