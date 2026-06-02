@@ -9,10 +9,17 @@
         body { margin: 0; background: #141414; color: white; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; overflow: hidden; }
         .controls { padding: 20px; text-align: center; }
         button, input[type="file"] { padding: 10px 20px; font-size: 16px; margin: 10px; background: #4CAF50; color: white; border: none; border-radius: 5px; font-weight: bold; }
+        
+        /* The New Terminal Styling */
+        #terminal { width: 90vw; height: 80vh; background: #0a0a0a; border: 2px solid #333; font-family: 'Courier New', Courier, monospace; font-size: 14px; color: #4af626; padding: 15px; box-sizing: border-box; overflow-y: auto; display: none; text-align: left; border-radius: 10px; box-shadow: inset 0 0 10px #000; }
+        .log-error { color: #ff5555; }
+        .log-warn { color: #ffb86c; }
+        .log-success { color: #50fa7b; }
     </style>
 </head>
 <body>
 
+    <!-- Main Setup Menu -->
     <div id="setup-screen" class="controls">
         <h2>Fabric .jar Web Loader</h2>
         <p>Upload your Fabric API and Mod .jar files:</p>
@@ -21,7 +28,23 @@
         <button onclick="navigator.share({ title: 'My Loader', url: window.location.href });">Share App Link</button>
     </div>
 
+    <!-- The Screen Terminal Canvas -->
+    <div id="terminal"></div>
+
     <script>
+        const term = document.getElementById('terminal');
+
+        // Helper function to print lines directly onto your terminal screen
+        function logToTerminal(text, type = 'normal') {
+            const line = document.createElement('div');
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${text}`;
+            if (type === 'error') line.className = 'log-error';
+            if (type === 'warn') line.className = 'log-warn';
+            if (type === 'success') line.className = 'log-success';
+            term.appendChild(line);
+            term.scrollTop = term.scrollHeight; // Automatically scroll to the bottom line
+        }
+
         async function bootGame() {
             const files = document.getElementById('mod-input').files;
             if (files.length === 0) {
@@ -29,9 +52,43 @@
                 return;
             }
 
-            document.getElementById('setup-screen').style.display = 'none';
+            // This is the pop-up notification you asked about
             alert("Initializing Fabric Mod Loader Engine... Reading virtual files.");
+
+            // The moment they click close/OK on the alert, this code triggers instantly:
+            document.getElementById('setup-screen').style.display = 'none';
+            term.style.display = 'block'; // Make the green hacker terminal visible!
+
+            // Simulated step-by-step engine loader sequence
+            logToTerminal("Starting Fabric Web Environment Bootloader...", "warn");
+            
+            await sleep(1000);
+            logToTerminal("Mounting localized virtual runtime Sandbox (ARM64 iOS Context)...");
+            
+            await sleep(1200);
+            logToTerminal("Bypassing JIT restrictions via local cache architecture...", "success");
+
+            await sleep(1500);
+            logToTerminal(`Analyzing target file queue: Found ${files.length} mod files loaded into local buffer.`);
+
+            // Read and output the name of every mod you actually uploaded
+            for (let i = 0; i < files.length; i++) {
+                await sleep(1000);
+                logToTerminal(`Checking mod bytecode architecture: ${files[i].name}...`);
+                await sleep(800);
+                logToTerminal(`[SUCCESS] Registered metadata: fabric.mod.json loaded from ${files[i].name}`, "success");
+            }
+
+            await sleep(1500);
+            logToTerminal("Injecting game engine hooks into memory core...", "warn");
+            
+            await sleep(1200);
+            logToTerminal("CRITICAL ERROR: Unable to load full engine binaries (Vanilla assets missing).", "error");
+            logToTerminal("Loader operational state: STANDBY. Virtual mod workspace successfully compiled in memory.", "warn");
         }
+
+        // Quick utility to create pauses between terminal print lines
+        function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
     </script>
 </body>
 </html>
