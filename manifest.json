@@ -1,7 +1,7 @@
 {
   "name": "Fabric Bedrock Web Loader",
   "short_name": "MC Loader",
-  "start_url": "/index.html",
+  "start_url": "/My-fabric-API-loader/index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#141414",
